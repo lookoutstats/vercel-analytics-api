@@ -7,7 +7,7 @@ A typed client for the Vercel Web Analytics and Speed Insights API. It has no de
 
 Use it in a script, a cron job or your own dashboard. It reads visitors, page views, top pages, referrers, countries, devices, custom events and Core Web Vitals.
 
-> Unofficial. This package is not made by Vercel and Vercel does not support it. It calls Vercel's public REST API at `api.vercel.com`.
+> Unofficial. Vercel did not make this package and does not support it. It calls Vercel's public REST API at `api.vercel.com`.
 
 ## Install
 
@@ -70,7 +70,7 @@ const { summary } = await va.speedInsights({
 // summary: [{ dimensions: { route: "/" }, values: { lcp: 1123.5, samples: 494 } }, ...]
 ```
 
-The metrics are `lcp_ms`, `inp_ms`, `cls`, `fcp_ms` and `ttfb_ms`, each with the prefix `vercel.speed_insights.`. The query covers production by default and needs a `teamId`.
+The metrics are `lcp_ms`, `inp_ms`, `cls`, `fcp_ms` and `ttfb_ms`, each with the prefix `vercel.speed_insights.`. By default it reads production data only. It needs a `teamId`.
 
 ## Errors
 
@@ -78,11 +78,11 @@ A failed call throws `VercelApiError`. It has `status`, Vercel's `code`, `messag
 
 - `isAuthError`: a 401 or 403. The token is wrong or expired, or it cannot read this team.
 - `isRateLimited`: a 429.
-- `isPlanRequired`: a 402. The team's plan does not include this query.
+- `isPlanRequired`: a 402. The team's plan does not include this data.
 
-A request that takes longer than `timeoutMs` (10 seconds by default) throws a `VercelApiError` with status 504 and code `timeout`.
+A call that takes longer than `timeoutMs` (10 seconds by default) throws a `VercelApiError` with status 504 and code `timeout`.
 
-The client retries a 429 or a 5xx answer two times by default. It waits the time that Vercel asks for, but not more than 60 seconds. Set `retries: 0` to turn the retries off.
+The client retries a 429 or a 5xx answer two times by default. It waits the time that Vercel asks for, but not more than 60 seconds. Set `retries: 0` to stop all retries.
 
 ```ts
 import { VercelApiError } from "vercel-analytics-api";
