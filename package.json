@@ -1,0 +1,67 @@
+{
+  "name": "vercel-analytics-api",
+  "version": "0.1.0",
+  "description": "Typed, zero-dependency client for the Vercel Web Analytics and Speed Insights API: visitors, page views, top pages, referrers, custom events and Core Web Vitals.",
+  "keywords": [
+    "vercel",
+    "vercel-analytics",
+    "vercel-analytics-api",
+    "web-analytics",
+    "speed-insights",
+    "core-web-vitals",
+    "analytics",
+    "api-client"
+  ],
+  "homepage": "https://github.com/lookoutstats/vercel-analytics-api#readme",
+  "bugs": {
+    "url": "https://github.com/lookoutstats/vercel-analytics-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lookoutstats/vercel-analytics-api.git"
+  },
+  "license": "MIT",
+  "author": "Lookout <hello@lookoutstats.com> (https://lookoutstats.com)",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build",
+    "prepublishOnly": "npm run check"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.1",
+    "@types/node": "22.19.1",
+    "eslint": "9.39.1",
+    "globals": "14.0.0",
+    "tsup": "8.5.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.1",
+    "vitest": "5.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,33 @@
+name: Publish
+
+# Push a tag like v0.1.1 (matching package.json's version) to stage it on npm. npm Trusted Publishing (OIDC): no npm
+# token is stored here, and provenance is added. The version is staged, not public: a maintainer approves it on npmjs.com
+# or with `npm stage approve <id>` (2FA), as the package's trusted publisher allows staging only.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Required reviewers on this environment (Settings › Environments) gate every release.
+    environment: npm
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      # Staged publishing needs npm 12 or later.
+      - run: npm install -g npm@12.0.2
+      - run: npm ci
+      - name: Tag matches package.json
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - run: npm run check
+      # Scripts don't run here (check already did): no dev dependency runs while the job can publish.
+      - run: npm stage publish --access public --ignore-scripts
