@@ -1,6 +1,6 @@
 {
   "name": "vercel-analytics-api",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Typed, zero-dependency client and CLI for the Vercel Web Analytics and Speed Insights API: visitors, page views, top pages, referrers, custom events and Core Web Vitals.",
   "keywords": [
     "vercel",
