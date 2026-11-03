@@ -1,7 +1,7 @@
 {
   "name": "vercel-analytics-api",
-  "version": "0.1.1",
-  "description": "Typed, zero-dependency client for the Vercel Web Analytics and Speed Insights API: visitors, page views, top pages, referrers, custom events and Core Web Vitals.",
+  "version": "0.2.0",
+  "description": "Typed, zero-dependency client and CLI for the Vercel Web Analytics and Speed Insights API: visitors, page views, top pages, referrers, custom events and Core Web Vitals.",
   "keywords": [
     "vercel",
     "vercel-analytics",
@@ -10,7 +10,10 @@
     "speed-insights",
     "core-web-vitals",
     "analytics",
-    "api-client"
+    "api-client",
+    "analytics-api",
+    "cli",
+    "nextjs"
   ],
   "homepage": "https://github.com/lookoutstats/vercel-analytics-api#readme",
   "bugs": {
@@ -25,6 +28,9 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "vercel-analytics-api": "dist/bin.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
