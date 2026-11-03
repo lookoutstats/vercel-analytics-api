@@ -31,6 +31,41 @@ const { visitors, pageviews } = await va.totals({ projectId: "prj_123", since })
 const topPages = await va.breakdown({ projectId: "prj_123", since, by: "requestPath", limit: 5 });
 ```
 
+## Command line
+
+You can query the API from a terminal without an install:
+
+```sh
+npx vercel-analytics-api visitors --since 30d
+```
+
+```text
+PROJECT           VISITORS  PAGE VIEWS
+example.com          1,200       3,400
+docs.example.com       480         910
+```
+
+| Command | Prints |
+|---|---|
+| `teams` | The teams the token can read. |
+| `projects` | The team's projects, with Web Analytics on or off. |
+| `visitors` | Visitors and page views for each project with Web Analytics. Add `--project` for one project. |
+| `top <what> --project <p>` | The top values. `<what>` is `pages`, `referrers`, `countries`, `devices`, `browsers`, `os`, `utm-source`, `utm-medium` or `utm-campaign`. |
+| `events --project <p>` | Custom events, most fired first. |
+| `series --project <p>` | Visitors and page views per day. Add `--hourly` for each hour. |
+
+Options:
+
+- `--project`, `-p`: the project name, its production domain or its id.
+- `--since`, `-s`: `24h`, `7d`, `30d` or a date such as `2026-10-01`. The default is `7d`. `--until`, `-u` sets the end.
+- `--limit`, `-n`: the number of rows for `top` and `events`. The default is 10.
+- `--json`: print JSON for a script or another tool.
+- `--team`, `-t`: the team slug or id.
+
+The token comes from `--token`, then `VERCEL_TOKEN`. If neither is set, the command uses your Vercel CLI login (`vercel login`) and its current team. If that login expired, run a Vercel CLI command such as `vercel whoami` to renew it.
+
+The exit code is 0 on success, 1 when Vercel returns an error, and 2 for a usage error.
+
 ## Methods
 
 | Method | Returns |
