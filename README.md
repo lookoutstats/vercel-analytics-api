@@ -137,13 +137,40 @@ try {
 - **Timestamps are UTC.** A day bucket starts at 00:00 UTC.
 - **Security.** The token goes only to `api.vercel.com`. `request()` refuses a full URL or a path that does not start with `/`.
 
-## Example
+## Recipes
 
-[`examples/report.ts`](examples/report.ts) prints a 7-day report for every project that has Web Analytics on:
+Each recipe is one file in [`examples/`](examples). Copy it into your project and import from `vercel-analytics-api`.
+
+| Recipe | What it does |
+|---|---|
+| [`weekly-slack.ts`](examples/weekly-slack.ts) + [`weekly-slack.yml`](examples/weekly-slack.yml) | Posts last week's visitors per project to Slack every Monday, with the change on the week before. It runs in GitHub Actions. |
+| [`export-csv.ts`](examples/export-csv.ts) | Writes 30 days of daily visitors and page views per project as CSV for Google Sheets or Excel. |
+| [`report.ts`](examples/report.ts) | Prints a 7-day report with the top pages for each project that has Web Analytics on. |
 
 ```sh
 VERCEL_TOKEN=... VERCEL_TEAM_ID=... npx tsx examples/report.ts
 ```
+
+### Visitors in a Next.js route
+
+This route handler returns a project's visitors for the last 7 days. The response stays in the cache for an hour, so the page does not call Vercel on each request.
+
+```ts
+// app/api/visitors/route.ts
+import { createClient } from "vercel-analytics-api";
+
+export const revalidate = 3600;
+
+const va = createClient({ token: process.env.VERCEL_TOKEN!, teamId: process.env.VERCEL_TEAM_ID });
+
+export async function GET() {
+  const since = Date.now() - 7 * 86_400_000;
+  const { visitors } = await va.totals({ projectId: process.env.VERCEL_PROJECT_ID!, since });
+  return Response.json({ visitors });
+}
+```
+
+Keep the token on the server. Do not send it to the browser.
 
 ## All your projects on one screen
 

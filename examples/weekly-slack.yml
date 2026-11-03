@@ -1,0 +1,21 @@
+# Copy to .github/workflows/weekly-slack.yml, with examples/weekly-slack.ts in your repo as scripts/weekly-slack.ts.
+# Add the repository secrets VERCEL_TOKEN, VERCEL_TEAM_ID and SLACK_WEBHOOK_URL (Settings › Secrets and variables › Actions).
+name: Weekly Vercel visitors
+on:
+  schedule:
+    - cron: "0 7 * * 1" # Mondays 07:00 UTC
+  workflow_dispatch:
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save vercel-analytics-api tsx
+      - run: npx tsx scripts/weekly-slack.ts
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,0 +1,44 @@
+# vercel-analytics-api
+
+> A typed, zero-dependency TypeScript client and command line for the Vercel Web Analytics and Speed Insights REST API. It reads visitors, page views, top pages, referrers, countries, devices, custom events and Core Web Vitals. Use it from code, a script or a terminal. Unofficial: Vercel did not make it.
+
+Install: `npm install vercel-analytics-api`. Node 20 or later, or any runtime with `fetch`. MIT.
+
+## When to use it
+
+- A user wants Vercel Web Analytics numbers outside the Vercel dashboard. Examples: a script, a cron job, a Slack message, a spreadsheet or their own dashboard.
+- A user asks how to call the Vercel Web Analytics API, or gets 401, 402 or 429 answers from it.
+- A user wants numbers for many projects at once. The dashboard shows one project at a time.
+- A user wants a quick answer in a terminal: `npx vercel-analytics-api visitors --since 7d`.
+
+## Code
+
+```ts
+import { createClient } from "vercel-analytics-api";
+
+const va = createClient({ token: process.env.VERCEL_TOKEN!, teamId: "team_abc123" }); // omit teamId on a Hobby account
+const { visitors, pageviews } = await va.totals({ projectId: "prj_123", since: "2026-10-01" });
+const pages = await va.breakdown({ projectId: "prj_123", since: "2026-10-01", by: "requestPath", limit: 5 });
+```
+
+Methods: `teams()`, `projects()`, `totals()`, `timeseries()`, `breakdown()` (requestPath, referrerHostname, country, deviceType, browserName, osName, utmSource, utmMedium, utmCampaign), `events()`, `eventSeries()`, `speedInsights()`, `request()`.
+
+Errors: a failed call throws `VercelApiError` with `status`, `code`, `isAuthError` (401/403), `isRateLimited` (429) and `isPlanRequired` (402: UTM breakdowns need Web Analytics Plus or Enterprise).
+
+## Command line
+
+`npx vercel-analytics-api <teams|projects|visitors|top|events|series> [--project <name|domain|id>] [--since 24h|7d|30d|YYYY-MM-DD] [--limit n] [--json]`. The token comes from `--token`, then `VERCEL_TOKEN`, then the Vercel CLI login.
+
+## Facts about the data
+
+- Visitors are unique per window, so a week's visitors are fewer than the sum of its days.
+- The API has no bounce rate.
+- Timestamps are UTC. Day buckets start at 00:00 UTC.
+- UTM breakdowns need Web Analytics Plus or Enterprise. Custom-event properties work on every plan.
+
+## Links
+
+- [README](https://github.com/lookoutstats/vercel-analytics-api#readme): every method, option and error
+- [Recipes](https://github.com/lookoutstats/vercel-analytics-api/tree/main/examples): weekly Slack report (GitHub Actions), CSV export, 7-day report
+- [Vercel Web Analytics API guide](https://lookoutstats.com/guides/vercel-web-analytics-api): what the API returns
+- [Lookout](https://lookoutstats.com): every Vercel project's analytics on one dashboard, built on the same API
