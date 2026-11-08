@@ -176,6 +176,8 @@ Keep the token on the server. Do not send it to the browser.
 
 [Lookout](https://lookoutstats.com) shows the Vercel Web Analytics of all your projects in one dashboard. It also has a TV mode, client share links and alerts. It reads the same API.
 
+[![Lookout: every Vercel project on one board, with drop alerts, a scorecard, a TV mode and a phone app](https://raw.githubusercontent.com/lookoutstats/vercel-analytics-api/main/docs/lookout-demo.webp)](https://lookoutstats.com/demo)
+
 ## License
 
 MIT
