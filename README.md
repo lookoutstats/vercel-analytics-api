@@ -178,6 +178,8 @@ Keep the token on the server. Do not send it to the browser.
 
 [![Lookout: every Vercel project on one board, with drop alerts, a scorecard, a TV mode and a phone app](https://raw.githubusercontent.com/lookoutstats/vercel-analytics-api/main/docs/lookout-demo.webp)](https://lookoutstats.com/demo)
 
+▶ [Watch the 30-second video](https://youtu.be/JLAQP-RVzvI) · [Open the live demo](https://lookoutstats.com/demo)
+
 ## License
 
 MIT
